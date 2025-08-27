@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Lora, Caveat } from "next/font/google";
 import "./globals.css";
+import Image from 'next/image';
+import Link from 'next/link';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: '--font-inter'
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const lora = Lora({
   subsets: ["latin"],
+  weight: ["700"],
+  variable: '--font-lora'
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: '--font-caveat'
 });
 
 export const metadata: Metadata = {
@@ -23,11 +32,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" className={`${inter.variable} ${lora.variable} ${caveat.variable}`}>
+      <body>
+        <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50 p-4 flex items-center justify-between border-b border-gray-200 h-30  ">
+          <div className="flex items-center space-x-4 h-full">
+            <div className="relative h-full w-30 md:w-40 flex-none">
+              <Image
+                src="/logo.png"
+                alt="IHC Marketplace - test company"
+                fill
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
+            
+          </div>
+          <nav>
+            <ul className="flex space-x-6">
+              <li>
+                <Link href="/" className="text-gray-700 hover:text-blue-600 font-inter text-lg md:text-xl font-medium">Home</Link>
+              </li>
+              <li>
+                <Link href="/chat" className="text-gray-700 hover:text-blue-600 font-inter text-lg md:text-xl font-medium">Falar com IA</Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        <main className="pt-20 md:pt-24 bg-gray-50 min-h-[calc(100vh-80px)]">{children}</main>
       </body>
     </html>
   );
