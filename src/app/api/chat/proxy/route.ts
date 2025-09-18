@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         'Authorization': authHeader,
       },
       body: JSON.stringify({ message }),
-      signal: AbortSignal.timeout(30000), // 30 segundos de timeout
+      signal: AbortSignal.timeout(600000), // 10 minutos de timeout
     });
 
     if (!response.ok) {

@@ -25,9 +25,9 @@ test.describe('Chat Page', () => {
     await expect(sendButton).toBeEnabled();
     await sendButton.click();
 
-    // Espera que o spinner de "Digitando..." apareça e desapareça
-    await expect(page.getByText('Digitando...')).toBeVisible();
-    await expect(page.getByText('Digitando...')).toBeHidden();
+    // Espera que o spinner de "Buscando Informações..." apareça e desapareça
+    await expect(page.getByText('Buscando Informações...')).toBeVisible();
+    await expect(page.getByText('Buscando Informações...')).toBeHidden();
 
     // Espera pela resposta da IA
     // A resposta da IA terá 'type: ai' no histórico, e esperamos que apareça na tela

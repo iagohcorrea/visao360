@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 interface ChatMessage {
   type: 'user' | 'ai';
@@ -64,12 +65,8 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <h1 className="text-center font-caveat text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-10 mt-8">
-        Visão 360
-      </h1>
-
-      <div className="bg-white p-6 rounded-2xl shadow-md w-full max-w-2xl flex flex-col h-[calc(100vh-160px)] md:h-[70vh]">
+    <div className="flex flex-col items-center justify-start min-h-screen py-8 px-4 sm:px-6 lg:px-8" style={{backgroundColor: '#f9fafb'}}>
+      <div className="bg-white p-6 rounded-2xl shadow-md w-full flex flex-col h-[calc(100vh-120px)] md:h-[80vh]">
         <h2 className="text-2xl font-lora font-bold text-gray-800 mb-4">Falar com IA</h2>
 
         {/* Output Box */}
@@ -89,7 +86,7 @@ export default function ChatPage() {
           {isLoading && (
             <div className="flex justify-start">
               <div className="max-w-[80%] sm:max-w-[70%] p-3 rounded-lg bg-gray-200 text-gray-800">
-                <p className="font-inter animate-pulse text-sm sm:text-base">Digitando...</p>
+                <p className="font-inter animate-pulse text-sm sm:text-base">Buscando Informações...</p>
               </div>
             </div>
           )}
@@ -114,7 +111,7 @@ export default function ChatPage() {
             aria-label="Enviar mensagem"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3 10l-3 3 6 3 3-6-3-3 3-6z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M3 12h16.5" />
             </svg>
           </button>
         </div>
