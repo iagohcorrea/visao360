@@ -14,23 +14,41 @@ interface NpsSummary {
   nps: string;
 }
 
+interface InsightData {
+  insight: string;
+  mes_label: string;
+  status: string;
+  updated_at?: string;
+}
+
 export default async function Home() {
   let npsData: NpsSummary | null = null;
+  let insightData: InsightData | null = null;
   let error: string | null = null;
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nps/summary`, {
-      cache: 'no-store', // Sempre buscar os dados mais recentes
-    });
+    // Busca dados de NPS e Insights em paralelo
+    const [npsResponse, insightResponse] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nps/summary`, {
+        cache: 'no-store',
+      }),
+      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/insights`, {
+        cache: 'no-store',
+      })
+    ]);
     
-    if (!response.ok) {
-      error = `Erro ao buscar dados do NPS: ${response.statusText}`;
+    if (!npsResponse.ok) {
+      error = `Erro ao buscar dados do NPS: ${npsResponse.statusText}`;
     } else {
-      npsData = await response.json();
+      npsData = await npsResponse.json();
+    }
+
+    if (insightResponse.ok) {
+      insightData = await insightResponse.json();
     }
   } catch (err) {
-    console.error('Erro ao buscar dados do NPS:', err);
-    error = 'Não foi possível conectar ao servidor para buscar dados do NPS.';
+    console.error('Erro ao buscar dados:', err);
+    error = 'Não foi possível conectar ao servidor para buscar dados.';
   }
 
   const hasNpsData = npsData && (npsData.total > 0 || parseFloat(npsData.nps) !== 0);
@@ -69,13 +87,31 @@ export default async function Home() {
       <div className="relative -mt-20 pb-8 px-4 sm:px-6 lg:px-8 z-20">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-            <h2 className="text-2xl font-lora font-bold text-gray-800 mb-6">General Insights</h2>
-            <textarea
-              readOnly
-              placeholder="(Output AI agent for general insights)"
-              className="w-full min-h-[200px] md:min-h-[250px] p-4 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="Output AI agent for general insights"
-            ></textarea>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-lora font-bold text-gray-800">General Insights</h2>
+              {insightData && (
+                <div className="text-sm text-gray-600">
+                  <span className="mr-2">📅 {insightData.mes_label}</span>
+                  {insightData.status === 'success' && <span className="text-green-600">✅ Atualizado</span>}
+                  {insightData.status === 'pending' && <span className="text-yellow-600">⏳ Pendente</span>}
+                  {insightData.status === 'error' && <span className="text-orange-600">⚠️ Usando anterior</span>}
+                </div>
+              )}
+            </div>
+            <div className="min-h-[200px] md:min-h-[250px] p-4 border border-gray-300 rounded-lg bg-gray-50">
+              {insightData ? (
+                <div className="text-gray-700 whitespace-pre-wrap font-inter text-sm md:text-base leading-relaxed">
+                  {insightData.insight}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-500">
+                  <div className="text-center">
+                    <div className="animate-pulse mb-2">🤖</div>
+                    <p>Carregando insights mensais...</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

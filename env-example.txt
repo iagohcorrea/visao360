@@ -1,0 +1,18 @@
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=sua_url_supabase
+SUPABASE_SERVICE_ROLE_KEY=sua_chave_de_servico_supabase
+
+# n8n Integration
+N8N_WEBHOOK_URL=https://your-n8n/webhook/...
+N8N_USERNAME=admin
+N8N_PASSWORD=password
+
+# Base URL (para produção)
+NEXT_PUBLIC_BASE_URL=https://seu-dominio.vercel.app
+
+# Cron Jobs Security
+CRON_SECRET=sua_chave_secreta_do_vercel_cron
+CRON_AUTH_KEY=sua_chave_para_apis_internas
+
+# Prompt mensal para insights (opcional - pode ser definido no código)
+MONTHLY_INSIGHTS_PROMPT="Analise os dados de NPS e feedback da empresa do último mês e gere um insight estratégico executivo..."
